@@ -53,7 +53,7 @@ public class AccuweatherModel implements WeatherModel {   //наследую Wea
                 Response oneDayForecastResponse = okkHttpClient.newCall(request).execute();    // ответ
                 weatherResponse = oneDayForecastResponse.body().string();
                 //System.out.println(weatherResponse);
-                dataBaseRepository.saveWeatherToDataBase(new Weather());//сохраняем
+                //dataBaseRepository.saveWeatherToDataBase(new Weather());//сохраняем
 
                 break;
 

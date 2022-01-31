@@ -40,13 +40,15 @@ public class DataBaseRepository {
         try (Connection connection = DriverManager.getConnection(DB_PATH)) {
             PreparedStatement saveWeather = connection.prepareStatement(insertWeather);
 
-            for (Weather weather : weatherlist)
-            saveWeather.setString(1, weather.getCity());               //заполняем шаблон значениями
-            saveWeather.setString(2, weather.getLocalDate());
-            saveWeather.setDouble(3, weather.getTemperature());
+            for (Weather weather : weatherlist) {
+                saveWeather.setString(1, weather.getCity());               //заполняем шаблон значениями
+                saveWeather.setString(2, weather.getLocalDate());
+                saveWeather.setDouble(3, weather.getTemperature());
 
-            saveWeather.execute();
+                saveWeather.addBatch();
+            }
 
+            saveWeather.executeBatch();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
@@ -56,16 +58,22 @@ public class DataBaseRepository {
         List<Weather> weather = new ArrayList<>();
 
         try (Connection connection = getConnection(DB_PATH)) { //ресурсный блок , что бы не задумываться о закрытии
-            /*connection = DriverManager.getConnection("jdbc:sqlite:ismailovadatabase.db");  // конекшен создаем с помощью класса DriverManager
             Statement statement = connection.createStatement();                  //что бы прогонять строки из базы данных по отдельности нужно создать еще один обьект который будет привязан к основному запросу Statement
+            ResultSet resultSet = statement.executeQuery(getWeather);
 
-
-            ResultSet resultSet = statement.executeQuery("select * from students"); // показать строки из студентс
             while (resultSet.next()) {                                            //resultSet.next() - нака есть следующий элемент. в цикле пройтись по множеству и показать обьекты
                 System.out.print(resultSet.getInt("id"));    // id - взять строчку
                 System.out.print(" ");
-                System.out.print(resultSet.getString("name"));
-                System.out.println();*/
+                System.out.print(resultSet.getString("city"));
+                System.out.println();
+                System.out.print(resultSet.getString("localdate"));
+                System.out.println();
+                System.out.print(resultSet.getString("temperature"));
+                System.out.println();
+                weather.add(new Weather(resultSet.getString("city"),
+                        resultSet.getString("localdate"),
+                        resultSet.getDouble("temperature")));
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
