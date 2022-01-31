@@ -5,6 +5,9 @@ import lesson_7.project.entity.Weather;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.sql.DriverManager.getConnection;
+
 //создаем подключение к базе данных
 public class DataBaseRepository {
     private static final String DB_PATH = "jdbc:sqlite:ismailovadatabase.db";
@@ -20,7 +23,14 @@ public class DataBaseRepository {
     }
 
     public boolean saveWeatherToDataBase(Weather weather) { //два варианта сохранения погоды
+        try (Connection connection = DriverManager.getConnection(DB_PATH)) {
+            PreparedStatement saveWeather = connection.prepareStatement(insertWeather);
 
+
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
     public void saveWeatherToDataBase(List<Weather> weatherlist) {
         //вариант принимающий список
@@ -29,7 +39,7 @@ public class DataBaseRepository {
     public List<Weather> getSavedToDBWeather() {
         List<Weather> weather = new ArrayList<>();
 
-        try (Connection connection = DriverManager.getConnection(DB_PATH)) { //ресурсный блок , что бы не задумываться о закрытии
+        try (Connection connection = getConnection(DB_PATH)) { //ресурсный блок , что бы не задумываться о закрытии
             /*connection = DriverManager.getConnection("jdbc:sqlite:ismailovadatabase.db");  // конекшен создаем с помощью класса DriverManager
             Statement statement = connection.createStatement();                  //что бы прогонять строки из базы данных по отдельности нужно создать еще один обьект который будет привязан к основному запросу Statement
 
