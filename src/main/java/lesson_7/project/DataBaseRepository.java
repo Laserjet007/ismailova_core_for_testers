@@ -36,8 +36,20 @@ public class DataBaseRepository {
         }
         throw new SQLException("Сохранение в базу не выполнено");    //выбрасывание исключения
     }
-    public void saveWeatherToDataBase(List<Weather> weatherlist) {
-        //вариант принимающий список
+    public void saveWeatherToDataBase(List<Weather> weatherlist) {                 //вариант принимающий список
+        try (Connection connection = DriverManager.getConnection(DB_PATH)) {
+            PreparedStatement saveWeather = connection.prepareStatement(insertWeather);
+
+            for (Weather weather : weatherlist)
+            saveWeather.setString(1, weather.getCity());               //заполняем шаблон значениями
+            saveWeather.setString(2, weather.getLocalDate());
+            saveWeather.setDouble(3, weather.getTemperature());
+
+            saveWeather.execute();
+
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
     }
 
     public List<Weather> getSavedToDBWeather() {
