@@ -22,15 +22,19 @@ public class DataBaseRepository {
         }
     }
 
-    public boolean saveWeatherToDataBase(Weather weather) { //два варианта сохранения погоды
+    public boolean saveWeatherToDataBase(Weather weather) throws SQLException { //два варианта сохранения погоды
         try (Connection connection = DriverManager.getConnection(DB_PATH)) {
             PreparedStatement saveWeather = connection.prepareStatement(insertWeather);
+            saveWeather.setString(1, weather.getCity());    //заполняем шаблон значениями
+            saveWeather.setString(2, weather.getLocalDate());
+            saveWeather.setDouble(3, weather.getTemperature());
 
-
+            return saveWeather.execute();                                     //сохранение в базу
 
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+        throw new SQLException("Сохранение в базу не выполнено");    //выбрасывание исключения
     }
     public void saveWeatherToDataBase(List<Weather> weatherlist) {
         //вариант принимающий список
