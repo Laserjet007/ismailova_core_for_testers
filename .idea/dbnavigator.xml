@@ -71,7 +71,24 @@ inner  join students s on s.faculty_id = f.id;
 
 select * from  students where name = 'Andrey';
 
-create table weather (id integer primary key autoincrement , city text, localdate text, temperature real);]]></console>
+create table weather (id integer primary key autoincrement , city text, localdate text, temperature real);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+create table  students(id integer primary key autoincrement, name text, score integer);]]></console>
     </connection>
     <connection id="0332b76f-20a0-4c51-827e-d85d4da81e34">
       <console name="Connection" type="STANDARD" schema="main" session="Main" />

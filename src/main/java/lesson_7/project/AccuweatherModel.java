@@ -1,12 +1,14 @@
 package lesson_7.project;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lesson_7.project.entity.Weather;
 import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.IOException;
+import java.util.List;
 
 public class AccuweatherModel implements WeatherModel {   //наследую WeatherModel
     //для того что бы получить погоду подключаюсь к серверу Weather (чтобы не передавать запросы строчками - делаю переменные константы к которов в дальнейшем буду обращаться)
@@ -26,6 +28,7 @@ public class AccuweatherModel implements WeatherModel {   //наследую Wea
 
     private static final OkHttpClient okkHttpClient = new OkHttpClient();//    в виде констант обьявил http клиент обжектмапер
     private static final ObjectMapper objectMapper = new ObjectMapper();
+    private DataBaseRepository dataBaseRepository = new DataBaseRepository();//подключение к getSavedToDBWeather()
 
     @Override
     public void getWeather(String selectedCity,Period period) throws IOException {//     главный реализуемый метод котой будет получать погоду
@@ -49,7 +52,8 @@ public class AccuweatherModel implements WeatherModel {   //наследую Wea
 
                 Response oneDayForecastResponse = okkHttpClient.newCall(request).execute();    // ответ
                 weatherResponse = oneDayForecastResponse.body().string();
-                System.out.println(weatherResponse);
+                //System.out.println(weatherResponse);
+                dataBaseRepository.saveWeatherToDataBase(new Weather());//сохраняем
 
                 break;
 
@@ -58,13 +62,15 @@ public class AccuweatherModel implements WeatherModel {   //наследую Wea
                 break;
 
 
+            case DB:
+                break;
         }
 
     }
 
     @Override
-    public void getSavedToDBWeather() {
-
+    public List<Weather> getSavedToDBWeather() {   // возвращает отдельные строчки (экземпляры) класса ведер, поэтому идет лист из ведеров
+         return dataBaseRepository.getSavedToDBWeather();                 //обычно то что относится к базам данных - выносится отдельно в вспомогательные классы (здесь дб репозиторий в котором будет и подключение и остальные параметры))
     }
 
     private String detectCityKey(String selectedCity) throws IOException {   //api запрос
