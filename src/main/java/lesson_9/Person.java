@@ -8,7 +8,7 @@ public class Person {
     private Position position;
 
     enum Position {                                           //перечисляемый тип списком
-           ENGINER, MANAGER, DIRECTOR
+        ENGINER, MANAGER, DIRECTOR
     }
 
     public Person(String name, int age, Position position) {    //конструктор
