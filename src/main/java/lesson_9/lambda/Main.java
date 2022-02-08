@@ -14,17 +14,14 @@ public class Main { //имеются два показателя и у всех 
 
         printAnimal(animalList, new CheckIsJumper());//передаем в printAnimal умения прыгать и бегать, что бы метод распечатал только прыгающих
 
-
 // создаем класс CheckIsJumper, который будет сравнивать по прыжкам. Сравниваем этих животных (прыгает ли или бегает) - метод, который будет сравнивать в зависимости от условия, которое передаем
-
-
     }
     //создаем метод принтэнимал который будет принимать CheckAble,и некий фильтр который будет принимать показатель каких животных печатать каких нет
 
     private static void printAnimal(List<Animal> animalList, CheckAble checkAble) {//что бы вызвать из маина делаем его приват
         for (Animal animal : animalList) {   //(проходимся по списку) выборка только прыгающих из списка анималлист
-            if (checkAble.test(animal)) {//с помощью ифа вызываем из checkAble - CheckIsJumper (проверяем кто из них прыгает)
-           System.out.println(animal);//если тест проходит то пишим animal
+            if (checkAble.test(animal)) {//с помощью ифа вызываем из checkAble - CheckIsJumper (проверяем кто из них прыгает)... реализация тест из checkAble
+           System.out.println(animal);//если тест проходит то пишим animal (есле умеет прыгать то выводим на печать)
             }
         }
     }
