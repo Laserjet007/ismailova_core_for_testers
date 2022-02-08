@@ -7,3 +7,4 @@ public class CheckIsJumper {
     }
 
 }
+//что бы не делать конструктор в классе CheckIsJumper сделаем интерфейс чековым
